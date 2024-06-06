@@ -48,6 +48,11 @@ class _AccountPageState extends State<ProfilePage> {
       onTap: () => AuthService().hideKeyBoard(),
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(Icons.arrow_back_sharp)),
           backgroundColor: Colors.blue,
           title: const Center(
             child: Text(
@@ -72,110 +77,118 @@ class _AccountPageState extends State<ProfilePage> {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: statusEditProfile
-                    ? Column(
-                        children: [
-                          costomTextField(
-                              "Full Name",
-                              "${doc?["displayName"]}",
-                              textEditingControllerName,
-                              Icons.account_circle_outlined,
-                              statusEditProfile),
-                          costomTextField(
-                              "E-mail",
-                              "${doc?["email"]}",
-                              textEditingControllerName,
-                              Icons.email_outlined,
-                              statusEditProfile),
-                          costomTextField(
-                              "role",
-                              "${doc?["role"]}",
-                              textEditingControllerName,
-                              Icons.person,
-                              statusEditProfile),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12.0),
-                            child: TextFormField(
-                              readOnly: true,
-                              controller: TextEditingController(
-                                  text: "${doc?["password"]}"),
-                              keyboardType: TextInputType.visiblePassword,
-                              obscureText: obsCurrentText,
-                              decoration: InputDecoration(
-                                label: const Text("Password"),
-                                labelStyle: const TextStyle(color: Colors.blue),
-                                alignLabelWithHint: true,
-                                prefixIcon: const Icon(
-                                  Icons.lock_outline,
-                                  color: Colors.blue,
-                                  size: 30,
+                    ? SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            costomTextField(
+                                "Full Name",
+                                "${doc?["displayName"]}",
+                                textEditingControllerName,
+                                Icons.account_circle_outlined,
+                                statusEditProfile),
+                            costomTextField(
+                                "E-mail",
+                                "${doc?["email"]}",
+                                textEditingControllerName,
+                                Icons.email_outlined,
+                                statusEditProfile),
+                            costomTextField(
+                                "role",
+                                "${doc?["role"]}",
+                                textEditingControllerName,
+                                Icons.person,
+                                statusEditProfile),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 12.0),
+                              child: TextFormField(
+                                readOnly: true,
+                                controller: TextEditingController(
+                                    text: "${doc?["password"]}"),
+                                keyboardType: TextInputType.visiblePassword,
+                                obscureText: obsCurrentText,
+                                decoration: InputDecoration(
+                                  label: const Text("Password"),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.blue),
+                                  alignLabelWithHint: true,
+                                  prefixIcon: const Icon(
+                                    Icons.lock_outline,
+                                    color: Colors.blue,
+                                    size: 30,
+                                  ),
+                                  border: const OutlineInputBorder(
+                                      borderSide: BorderSide(width: 1.5),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        obsCurrentText = !obsCurrentText;
+                                      });
+                                    },
+                                    child: Icon(obsCurrentText
+                                        ? Icons.visibility_off_outlined
+                                        : Icons.visibility_outlined),
+                                  ),
                                 ),
-                                border: const OutlineInputBorder(
-                                    borderSide: BorderSide(width: 1.5),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  statusEditProfile = !statusEditProfile;
+                                });
+                              },
+                              child: Container(
+                                height: context.height * 0.06,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                alignment: Alignment.center,
+                                decoration: const BoxDecoration(
+                                    color: Colors.blue,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20))),
-                                suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      obsCurrentText = !obsCurrentText;
-                                    });
-                                  },
-                                  child: Icon(obsCurrentText
-                                      ? Icons.visibility_off_outlined
-                                      : Icons.visibility_outlined),
+                                child: const Text(
+                                  "Edit Profile",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white),
                                 ),
                               ),
                             ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                statusEditProfile = !statusEditProfile;
-                              });
-                            },
-                            child: Container(
-                              height: context.height * 0.06,
-                              margin: const EdgeInsets.symmetric(vertical: 20),
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: const Text(
-                                "Edit Profile",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UserManagementPage(),
+                            if (roleController.role.value == 'manager')
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          UserManagementPage(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: context.height * 0.06,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  alignment: Alignment.center,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: const Text(
+                                    "Manager User",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.white),
+                                  ),
                                 ),
-                              );
-                            },
-                            child: Container(
-                              height: context.height * 0.06,
-                              margin: const EdgeInsets.symmetric(vertical: 20),
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: const Text(
-                                "Manager User",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
+                              )
+                          ],
+                        ),
                       )
                     : Column(
                         children: [

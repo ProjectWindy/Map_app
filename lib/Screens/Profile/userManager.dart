@@ -235,11 +235,9 @@ class _UserManagementPageState extends State<UserManagementPage> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      buildTextField('Name', nameController),
+                      buildTextField('Name', nameController, false),
                       SizedBox(height: 10.0),
-                      buildTextField('Email', emailController),
-                      SizedBox(height: 10.0),
-                      buildTextField('Password', passwordController),
+                      buildTextField('Password', passwordController, true),
                       SizedBox(height: 10.0),
                       Text(
                         'Role',
@@ -249,25 +247,36 @@ class _UserManagementPageState extends State<UserManagementPage> {
                         ),
                       ),
                       SizedBox(height: 10.0),
-                      RadioListTile<String>(
-                        title: const Text('Staff'),
-                        value: 'staff',
-                        groupValue: selectedRole,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedRole = value;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        title: const Text('Manager'),
-                        value: 'manager',
-                        groupValue: selectedRole,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedRole = value;
-                          });
-                        },
+                      Column(
+                        children: [
+                          if (selectedRole == null ||
+                              selectedRole == 'staff') // Show Staff option
+
+                            RadioListTile<String>(
+                              title: const Text('Staff'),
+                              value: 'staff',
+                              groupValue: selectedRole,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedRole = value;
+                                });
+                              },
+                            ),
+                          if (selectedRole == null ||
+                              selectedRole == 'manager') // Show Manager option
+
+                            RadioListTile<String>(
+                              title: const Text('Manager'),
+                              value: 'manager',
+                              groupValue: selectedRole,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedRole = value;
+                                });
+                              },
+                            ),
+                          // Conditional content based on the selected role
+                        ],
                       ),
                       SizedBox(height: 30.0),
                       Center(
@@ -304,7 +313,11 @@ class _UserManagementPageState extends State<UserManagementPage> {
           )));
 }
 
-Widget buildTextField(String label, TextEditingController controller) {
+Widget buildTextField(
+  String label,
+  TextEditingController controller,
+  bool show,
+) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -323,6 +336,7 @@ Widget buildTextField(String label, TextEditingController controller) {
           borderRadius: BorderRadius.circular(10),
         ),
         child: TextField(
+          obscureText: show,
           controller: controller,
           decoration: InputDecoration(border: InputBorder.none),
         ),

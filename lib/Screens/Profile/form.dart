@@ -16,7 +16,7 @@ class _Form1State extends State<Form1> {
   late TextEditingController nameController;
   late TextEditingController emailController;
   late TextEditingController passwordController;
-  late TextEditingController roleController;
+  TextEditingController roleController = TextEditingController(text: 'staff');
 
   @override
   void initState() {
@@ -24,7 +24,6 @@ class _Form1State extends State<Form1> {
     nameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
-    roleController = TextEditingController();
   }
 
   @override
@@ -36,7 +35,8 @@ class _Form1State extends State<Form1> {
     super.dispose();
   }
 
-  Widget buildTextField(String label, TextEditingController controller) {
+  Widget buildTextField(
+      String label, TextEditingController controller, bool show, bool seen) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,6 +63,8 @@ class _Form1State extends State<Form1> {
               SizedBox(width: 10.0),
               Expanded(
                 child: TextField(
+                  readOnly: seen,
+                  obscureText: show,
                   controller: controller,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -84,7 +86,7 @@ class _Form1State extends State<Form1> {
     String name = nameController.text;
     String email = emailController.text;
     String password = passwordController.text;
-    String role = roleController.text;
+    String role = 'staff';
 
     // Kiểm tra giá trị đầu vào không null hoặc trống
     if (name.isEmpty || email.isEmpty || password.isEmpty || role.isEmpty) {
@@ -113,20 +115,22 @@ class _Form1State extends State<Form1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Add Users'),
+      ),
       body: Container(
         margin: EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildTextField('Name', nameController),
+              buildTextField('Name', nameController, false, false),
               SizedBox(height: 10.0),
-              buildTextField('Email', emailController),
+              buildTextField('Email', emailController, false, false),
               SizedBox(height: 10.0),
-              buildTextField('Password', passwordController),
+              buildTextField('Password', passwordController, true, false),
               SizedBox(height: 10.0),
-              buildTextField('Role', roleController),
+              buildTextField('Role', roleController, false, true),
               SizedBox(height: 30.0),
               Center(
                 child: ElevatedButton(

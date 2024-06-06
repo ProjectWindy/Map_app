@@ -12,5 +12,7 @@
         "Vietmap"
     ],
     "cSpell.language": "en,vi",
-    "dart.flutterSdkPath": "/Users/dev/fvm/default/bin"
-}
+    // "dart.flutterSdkPath": "/Users/dev/fvm/default/bin"
+    "dart.flutterSdkPath": "C:/Users/bossv/OneDrive/Desktop/flutter_windows_3.19.5-stable/flutter"
+
+ }
